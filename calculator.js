@@ -1,10 +1,48 @@
-// how to get order of operations?
 // randomly scramble numbers, give 69 half the time, and make the non-69s off by one
 // change flex so that all resize dynamically
+// have parentheses
 
 createCalc();
 
-// function to make calculator size with screen and populate with numbers and operators
+//on click behavior to launch operations
+let number1 = new Array();
+let number2 = new Array();
+let operation;
+let storageNum = new Array();
+let storageOp;
+
+let numberButtons = document.querySelectorAll('.numberButton');
+Array.from(numberButtons).forEach(function(button) {
+    button.addEventListener('click', () => {
+        if (!operation) number1.push(button.textContent);
+        else number2.push(parseInt(button.textContent));
+        //console.log(number1);
+        //console.log(number2)
+    })
+})
+
+let operatorButtons = document.querySelectorAll('.operatorButton');
+Array.from(operatorButtons).forEach(function(button) {
+    button.addEventListener('click', () => {
+        if (number1 && !operation) operation = button.textContent();
+        else if (number2 && (operation === 'x' || operation === '÷')) {
+            let newNumber1 = calculate(number1, operation, number2);
+            number1 = newNumber1;
+            operation = button.textContent();
+        }
+        else if (number2 && (operation === '-' || operation === '+')) {
+            storageNum = reduction(number1);
+            storageOp = operation;
+            operation = button.textContent();
+            number1 = number2;
+
+        }
+    })
+})
+
+let 
+
+//function to make calculator size with screen and populate with numbers and operators
 function createCalc() {
     const numberContainer = document.querySelector('#numberContainer');
     const operatorContainer = document.querySelector('#operatorContainer');
@@ -49,7 +87,7 @@ function createCalc() {
     
     const decimal = document.createElement('button');
     decimal.setAttribute('style', `width: ${squareSide()}px; height: ${squareSide()}px;`);
-    decimal.classList.add('operatorButton');
+    decimal.classList.add('numberButton');
     decimal.textContent = ".";
     zeroRow.appendChild(decimal);
 
@@ -60,20 +98,61 @@ function createCalc() {
     zeroRow.appendChild(equals);
 
     zeroRow.classList.add('zeroRow');
-    console.log(zeroRow);
+    //console.log(zeroRow);
     zeroContainer.appendChild(zeroRow);
 
 
-    const displayRow = document.createElement('input');
-    displayRow.setAttribute('type', 'text')
-    displayRow.setAttribute('style', `width: ${squareSide()*4+10}px; height: ${squareSide()}px;`);
+    const displayRow = document.createElement('div');
+    displayRow.setAttribute('style', `width: ${squareSide()*4+14}px; height: ${squareSide()}px; border: solid 0.1px; border-radius: 8px;`);
     displayContainer.appendChild(displayRow);
 }
 
 //function to find width/height of squares
 function squareSide() {
     let height = window.innerHeight / 8;
-    console.log('height' + height);
+    //console.log('height' + height);
     //ideally this would be live responding to user resizing window
         return height;
+}
+
+//function to determine which operation function to call
+function calculate(number1, operation, number2) {
+if (operation = '+') add(number1, number2);
+else if (operation = '-') subtract(number1, number2);
+else if (operation = 'x') multiply(number1, number2);
+else divide(number1, number2);
+}
+
+//adding
+function add(number1, number2){
+let solution = number1 + number2;
+return solution;
+}
+
+//subtracting
+function subtract(number1, number2){
+let solution = number1 - number2;
+return solution;
+}
+
+//multiply
+function multiply(number1, number2){
+let solution = number1 * number2;
+return solution;
+}
+
+//divide
+function divide(number1, number2){
+if (number2 = 0) alert('this answer is currently in debate by the best philosophers out there. We cannot help.');
+else { let solution = number1/number2;
+return solution;
+}
+}
+
+//function to reduce number arrays into a number
+function reduction(number) {
+    let squished = number.reduce((total, digit) => {
+        return total + digit;
+      }, '');
+    return squished;
 }
