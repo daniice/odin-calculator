@@ -64,6 +64,22 @@ body {
     background-color: rgb(221, 224, 226);
 }
 
-button.operatorButton:hover {
+.operatorButton:hover {
     background-color: rgb(248, 236, 224);
+}
+
+.equalsButton {
+    border: solid 0.1px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background-color: rgb(221, 224, 226);
+}
+
+.equalsButton:hover {
+    background-color: rgb(248, 236, 224);
+}
+
+.display {
+    border: solid 0.1px; 
+    border-radius: 8px;
 }

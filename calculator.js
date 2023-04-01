@@ -1,6 +1,8 @@
 // randomly scramble numbers, give 69 half the time, and make the non-69s off by one
 // change flex so that all resize dynamically
 // have parentheses
+// have possibility for negative
+// don't allow additional numbers to be added to number2 upon calculation
 
 createCalc();
 
@@ -8,39 +10,58 @@ createCalc();
 let number1 = new Array();
 let number2 = new Array();
 let operation;
-let storageNum = new Array();
+let storageNum;
 let storageOp;
+
+const display = document.querySelector('.display');
 
 let numberButtons = document.querySelectorAll('.numberButton');
 Array.from(numberButtons).forEach(function(button) {
     button.addEventListener('click', () => {
-        if (!operation) number1.push(button.textContent);
-        else number2.push(parseInt(button.textContent));
+        if (!operation) {
+            number1.push(button.textContent);
+            display.textContent = reduction(number1);
+        }
+        else {
+            number2.push(button.textContent);
+            display.textContent = reduction(number2);
         //console.log(number1);
         //console.log(number2)
-    })
-})
+        }
+})})
 
 let operatorButtons = document.querySelectorAll('.operatorButton');
 Array.from(operatorButtons).forEach(function(button) {
     button.addEventListener('click', () => {
-        if (number1 && !operation) operation = button.textContent();
+        if (number1 && !operation) operation = button.textContent;
         else if (number2 && (operation === 'x' || operation === '÷')) {
             let newNumber1 = calculate(number1, operation, number2);
-            number1 = newNumber1;
-            operation = button.textContent();
+            number1 = [];
+            number1.push(newNumber1);
+            number2 = [];
+            operation = button.textContent;
         }
         else if (number2 && (operation === '-' || operation === '+')) {
             storageNum = reduction(number1);
             storageOp = operation;
-            operation = button.textContent();
+            operation = button.textContent;
             number1 = number2;
 
         }
     })
 })
 
-let 
+let equals = document.querySelector('.equalsButton');
+equals.addEventListener('click', () => {
+    if (number1 && operation && number2) {
+        storageNum = calculate(number1, operation, number2);
+        display.textContent = storageNum;
+        number1 = [];
+        number2 = [];
+        operation = '';
+        number1.push(storageNum);
+    }
+})
 
 //function to make calculator size with screen and populate with numbers and operators
 function createCalc() {
@@ -93,7 +114,7 @@ function createCalc() {
 
     const equals = document.createElement('button');
     equals.setAttribute('style', `width: ${squareSide()*2+8}px; height: ${squareSide()}px;`);
-    equals.classList.add('operatorButton');
+    equals.classList.add('equalsButton');
     equals.textContent = "=";
     zeroRow.appendChild(equals);
 
@@ -103,7 +124,8 @@ function createCalc() {
 
 
     const displayRow = document.createElement('div');
-    displayRow.setAttribute('style', `width: ${squareSide()*4+14}px; height: ${squareSide()}px; border: solid 0.1px; border-radius: 8px;`);
+    displayRow.setAttribute('style', `width: ${squareSide()*4+14}px; height: ${squareSide()}px;`);
+    displayRow.classList.add('display');
     displayContainer.appendChild(displayRow);
 }
 
@@ -116,35 +138,40 @@ function squareSide() {
 }
 
 //function to determine which operation function to call
-function calculate(number1, operation, number2) {
-if (operation = '+') add(number1, number2);
-else if (operation = '-') subtract(number1, number2);
-else if (operation = 'x') multiply(number1, number2);
-else divide(number1, number2);
+function calculate(num1, op, num2) {
+if (op === '+') return add(parseFloat(reduction(num1)), parseFloat(reduction(num2)));
+else if (op === '-') return subtract(parseFloat(reduction(num1)), parseFloat(reduction(num2)));
+else if (op === 'x') return multiply(parseFloat(reduction(num1)), parseFloat(reduction(num2)));
+else return divide(parseFloat(reduction(num1)), parseFloat(reduction(num2)));
 }
 
 //adding
-function add(number1, number2){
-let solution = number1 + number2;
+function add(num1, num2){
+let solution = num1 + num2;
 return solution;
 }
 
 //subtracting
-function subtract(number1, number2){
-let solution = number1 - number2;
+function subtract(num1, num2){
+let solution = num1 - num2;
 return solution;
 }
 
-//multiply
-function multiply(number1, number2){
-let solution = number1 * number2;
+//multiplying
+function multiply(num1, num2){
+let solution = num1 * num2;
 return solution;
 }
 
-//divide
-function divide(number1, number2){
-if (number2 = 0) alert('this answer is currently in debate by the best philosophers out there. We cannot help.');
-else { let solution = number1/number2;
+//dividing
+function divide(num1, num2){
+if (num2 === 0) {
+    alert('This answer is currently in debate by the best philosophers out there. We cannot help.');
+    number1 = [];
+    number2 = [];
+    operation = '';
+}
+else { let solution = num1/num2;
 return solution;
 }
 }
