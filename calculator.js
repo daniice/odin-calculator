@@ -3,6 +3,7 @@
 // have parentheses
 // have possibility for negative
 // allow further calculation upon equals
+// could be a much better storage structure
 
 
 createCalc();
@@ -11,13 +12,17 @@ createCalc();
 //on click behavior to populate input array
 let currentNumb = new Array();
 let input = new Array();
+let multDiv = new Array();
 let solution;
 const display = document.querySelector('.display');
 
 let numberButtons = document.querySelectorAll('.numberButton');
 Array.from(numberButtons).forEach(function(button) {
     button.addEventListener('click', () => {
-        if (solution) input = [];
+        if (solution) {
+          input = [];
+          solution = '';
+        }
         currentNumb.push(button.textContent);
         display.textContent = strand(input) + strand(currentNumb);
     })
@@ -28,53 +33,62 @@ Array.from(operatorButtons).forEach(function(button) {
     button.addEventListener('click', () => {
       if (currentNumb.length > 0) {
         // console.log(button.textContent);
-        input.push(currentNumb);
+        input.push(strand(currentNumb));
         currentNumb = [];
         input.push(button.textContent);
         display.textContent = strand(input);
     }})
 })
 
-
 //on equals, evaluate through expression according to order of operations, display solution, clear input array, then populate first index with solution
 let equals = document.querySelector('.equalsButton');
 equals.addEventListener('click', () => {
-  input.push(currentNumb);
+  //console.log('equals');
+  input.push(strand(currentNumb));
   currentNumb = [];
-  let multDiv = new Array();
 
-    for (let i=0; i<input.length; i++) {
-      if (input[i] === 'x') {
-        wop = parseFloat(input[i-1] * parseFloat(input[i+1]));
-        multDiv.splice(multDiv.length - 1, 1, wop);
-        input.splice(i+1, 1);
+  for (let i=0; i<input.length; i++) {
+    if (input[i] === 'x') {
+      wop = parseFloat(input[i-1]) * parseFloat(input[i+1]);
+      multDiv.splice(multDiv.length - 1, 1, wop);
+      input.splice(i+1, 1, wop);
       }
-      else if (input[i] === '÷') {
-        wop = parseFloat(input[i-1] / parseFloat(input[i+1]));
-        multDiv.splice(multDiv.length - 1, 1, wop);
-        input.splice(i+1, 1);
+    else if (input[i] === '÷') {
+      if (parseFloat(input[i+1]) === 0) {
+        alert('This answer is currently in debate by the best philosophers out there. We cannot help.');
+        multDiv = [];
+        input = [];
+        display.textContent = '';
       }
       else {
-        multDiv.push(input[i]);
+        wop = parseFloat(input[i-1]) / parseFloat(input[i+1]);
+        multDiv.splice(multDiv.length - 1, 1, wop);
+        input.splice(i+1, 1, wop);
+      }}
+    else {
+      multDiv.push(input[i]);
       }
     }
 
-    for (let j=0; j<multDiv.length; j++) {
-      if (input[j] === '+') {
-        wop = parseFloat(input[j-1] + parseFloat(input[j+1]));
-        input.splice(i-1, 3, wop);
+  for (let j=0; j<multDiv.length; j++) {
+    if (multDiv[j] === '+') {
+      wop = parseFloat(multDiv[j-1]) + parseFloat(multDiv[j+1]);
+      multDiv.splice(j+1, 1, wop);
       }
-      else if (input[j] === '-') {
-        wop = parseFloat(input[i-1] - parseFloat(input[i+1]));
-        input.splice(i-1, 3, wop);
+    else if (multDiv[j] === '-') {
+      wop = parseFloat(multDiv[j-1]) - parseFloat(multDiv[j+1]);
+      multDiv.splice(j+1, 1, wop);
       }
     }
 
-    input.push(solution);
+    solution = multDiv[multDiv.length - 1];
+    multDiv = [];
+    display.textContent = solution;
+
 })
 
 
-//function to reduct array to string
+//function to reduce array to string
 function strand(arr) {
     let final = '';
     arr.forEach(function(entry) {
@@ -157,32 +171,3 @@ function squareSide() {
         return height;
 }
 
-//adding
-function add(num1, num2){
-let solution = parseFloat(num1) + parseFloat(num2);
-return solution;
-}
-
-//subtracting
-function subtract(num1, num2){
-let solution = parseFloat(num1) - parseFloat(num2);
-return solution;
-}
-
-//multiplying
-function multiply(num1, num2){
-let solution = parseFloat(num1) * parseFloat(num2);
-return solution;
-}
-
-//dividing
-function divide(num1, num2){
-if (parseFloat(num2) === 0) {
-    alert('This answer is currently in debate by the best philosophers out there. We cannot help.');
-    input = [];
-    display.textContent = '';
-}
-else { let solution = parseFloat(num1)/parseFloat(num2);
-return solution;
-}
-}
