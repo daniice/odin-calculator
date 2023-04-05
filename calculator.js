@@ -3,7 +3,7 @@
 // have parentheses
 // have possibility for negative
 // allow further calculation upon equals
-// could be a much better storage structure
+// could be a much better storage structure - Kenny genuis boy
 
 
 createCalc();
@@ -55,7 +55,7 @@ equals.addEventListener('click', () => {
       }
     else if (input[i] === '÷') {
       if (parseFloat(input[i+1]) === 0) {
-        alert('This answer is currently in debate by the best philosophers out there. We cannot help.');
+        alert('This answer is currently being debated by the best philosophers out there. We cannot help.');
         multDiv = [];
         input = [];
         display.textContent = '';
@@ -109,7 +109,6 @@ function createCalc() {
         const numberRow = document.createElement('div');
             for (j=1; j<=3; j++) {
                 const number = document.createElement('button');
-                number.setAttribute('style', `width: ${squareSide()}px; height: ${squareSide()}px;`);
                 number.classList.add('numberButton');
                 number.textContent = count;
                 numberRow.appendChild(number);
@@ -123,7 +122,6 @@ function createCalc() {
     const operators = ['+', '-', 'x', '÷'];
     operators.forEach(function(operator) {
         const operate = document.createElement('button');
-        operate.setAttribute('style', `width: ${squareSide()}px; height: ${squareSide()*3/4}px;`);
         operate.classList.add('operatorButton');
         operate.textContent = operator;
         operatorColumn.appendChild(operate);
@@ -133,21 +131,17 @@ function createCalc() {
 
     
     const zeroRow = document.createElement('div');
-
     const zero = document.createElement('button');
-    zero.setAttribute('style', `width: ${squareSide()}px; height: ${squareSide()}px;`);
     zero.classList.add('numberButton');
     zero.textContent = "0";
     zeroRow.appendChild(zero);
     
     const decimal = document.createElement('button');
-    decimal.setAttribute('style', `width: ${squareSide()}px; height: ${squareSide()}px;`);
     decimal.classList.add('numberButton');
     decimal.textContent = ".";
     zeroRow.appendChild(decimal);
 
     const equals = document.createElement('button');
-    equals.setAttribute('style', `width: ${squareSide()*2+8}px; height: ${squareSide()}px;`);
     equals.classList.add('equalsButton');
     equals.textContent = "=";
     zeroRow.appendChild(equals);
@@ -158,16 +152,7 @@ function createCalc() {
 
 
     const displayRow = document.createElement('div');
-    displayRow.setAttribute('style', `width: ${squareSide()*4+14}px; height: ${squareSide()}px;`);
     displayRow.classList.add('display');
     displayContainer.appendChild(displayRow);
-}
-
-//function to find width/height of squares
-function squareSide() {
-    let height = window.innerHeight / 8;
-    //console.log('height' + height);
-    //ideally this would be live responding to user resizing window
-        return height;
 }
 

@@ -9,41 +9,68 @@ body {
     gap: 32px;
 }
 
+#title {
+    display: flex;
+}
+
 #calcOutline {
     border: 2px solid;
     border-radius: 16px;
     display: flex;
+    height: 50vh;
+    width: 50vw;
     flex-direction: column;
     padding: 8px;
     gap: 8px;
 }
 
+.display {
+    border: solid 0.1px; 
+    border-radius: 8px;
+    height: 8vh;
+}
+
 #squaresContainer {
     display: flex;
-    flex-direction: row;
     gap: 8px;
+    flex: 3;
+}
+
+#zeroContainer {
+    display: flex;
+    flex: 1;
+}
+
+#numberContainer {
+    display: flex;
+    flex: 3;
+    flex-direction: column;
+    gap: 4px;
+}
+
+#operatorContainer {
+    display: flex;
+    flex: 1;
 }
 
 .numberRow {
     display: flex;
+    flex: 1;
     gap: 4px;
 }
 
 .operatorColumn {
     display: flex;
+    flex: 1;
     flex-direction: column;
+    height: 30vh;
     gap: 2.8px;
 }
 
 .zeroRow {
     display: flex;
     gap: 4px;
-}
-
-#numberContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    flex: 1;
 }
 
 .numberButton {
@@ -51,6 +78,7 @@ body {
     box-sizing: border-box;
     border-radius: 8px;
     background-color: rgb(214, 211, 219);
+    flex: 1
 }
 
 .numberButton:hover {
@@ -62,6 +90,7 @@ body {
     box-sizing: border-box;
     border-radius: 8px;
     background-color: rgb(221, 224, 226);
+    flex: 1;
 }
 
 .operatorButton:hover {
@@ -71,6 +100,7 @@ body {
 .equalsButton {
     border: solid 0.1px;
     box-sizing: border-box;
+    flex: 3;
     border-radius: 8px;
     background-color: rgb(221, 224, 226);
 }
@@ -79,7 +109,5 @@ body {
     background-color: rgb(248, 236, 224);
 }
 
-.display {
-    border: solid 0.1px; 
-    border-radius: 8px;
-}
+
+
