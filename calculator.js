@@ -1,7 +1,6 @@
 // randomly scramble numbers, give 69 half the time, and make the non-69s off by one
-// change flex so that all resize dynamically
 // have parentheses
-// have possibility for negative
+// have possibility to enter negative
 // allow further calculation upon equals
 // could be a much better storage structure - Kenny genuis boy
 
@@ -15,6 +14,7 @@ let input = new Array();
 let multDiv = new Array();
 let solution;
 const display = document.querySelector('.display');
+const displayContainer = document.querySelector('#displayContainer');
 
 let numberButtons = document.querySelectorAll('.numberButton');
 Array.from(numberButtons).forEach(function(button) {
@@ -31,7 +31,7 @@ Array.from(numberButtons).forEach(function(button) {
 let operatorButtons = document.querySelectorAll('.operatorButton');
 Array.from(operatorButtons).forEach(function(button) {
     button.addEventListener('click', () => {
-      if (currentNumb.length > 0) {
+      if (currentNumb.length>0 && input.length<=10) {
         // console.log(button.textContent);
         input.push(strand(currentNumb));
         currentNumb = [];
@@ -105,6 +105,10 @@ function createCalc() {
     const zeroContainer = document.querySelector('#zeroContainer');
     let count = 1;
 
+    const displayRow = document.createElement('div');
+    displayRow.classList.add('display');
+    displayContainer.appendChild(displayRow);
+
     for (i=1; i<=3; i++) {
         const numberRow = document.createElement('div');
             for (j=1; j<=3; j++) {
@@ -149,10 +153,5 @@ function createCalc() {
     zeroRow.classList.add('zeroRow');
     //console.log(zeroRow);
     zeroContainer.appendChild(zeroRow);
-
-
-    const displayRow = document.createElement('div');
-    displayRow.classList.add('display');
-    displayContainer.appendChild(displayRow);
 }
 
