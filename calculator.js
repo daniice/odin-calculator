@@ -1,8 +1,15 @@
+// ideal to-do:
 // randomly scramble numbers, give 69 half the time, and make the non-69s off by one
 // have parentheses
 // have possibility to enter negative
 // allow further calculation upon equals
-// could be a much better storage structure - Kenny genuis boy
+// could be a much better storage structure - Kenny genuis boy idea started at bottom
+// fix floating weirdness
+// limit on number of numbers entered
+// help Odin with order of operations on project
+// add a clear button
+// add a backspace button
+// add keyboard support
 
 
 createCalc();
@@ -14,7 +21,6 @@ let input = new Array();
 let multDiv = new Array();
 let solution;
 const display = document.querySelector('.display');
-const displayContainer = document.querySelector('#displayContainer');
 
 let numberButtons = document.querySelectorAll('.numberButton');
 Array.from(numberButtons).forEach(function(button) {
@@ -28,11 +34,24 @@ Array.from(numberButtons).forEach(function(button) {
     })
 })
 
+let deci = document.querySelectorAll('.deci');
+Array.from(deci).forEach(function(button) {
+    button.addEventListener('click', () => {
+      if (!currentNumb.includes('.')) {
+        if (solution) {
+          input = [];
+          solution = '';
+        }
+        currentNumb.push(button.textContent);
+        display.textContent = strand(input) + strand(currentNumb);
+}})
+})
+
 let operatorButtons = document.querySelectorAll('.operatorButton');
 Array.from(operatorButtons).forEach(function(button) {
     button.addEventListener('click', () => {
-      if (currentNumb.length>0 && input.length<=10) {
-        // console.log(button.textContent);
+      if (currentNumb.length>0) {
+        console.log(button.textContent);
         input.push(strand(currentNumb));
         currentNumb = [];
         input.push(button.textContent);
@@ -43,7 +62,9 @@ Array.from(operatorButtons).forEach(function(button) {
 //on equals, evaluate through expression according to order of operations, display solution, clear input array, then populate first index with solution
 let equals = document.querySelector('.equalsButton');
 equals.addEventListener('click', () => {
-  //console.log('equals');
+  console.log('equals');
+  if (currentNumb.length>0 && input.length > 1 && currentNumb[currentNumb.length - 1] != '+' && currentNumb[currentNumb.length - 1] != '-' && currentNumb[currentNumb.length - 1] != 'x' && currentNumb[currentNumb.length - 1] != '÷') {
+
   input.push(strand(currentNumb));
   currentNumb = [];
 
@@ -61,19 +82,24 @@ equals.addEventListener('click', () => {
         display.textContent = '';
       }
       else {
+        console.log(input);
         wop = parseFloat(input[i-1]) / parseFloat(input[i+1]);
         multDiv.splice(multDiv.length - 1, 1, wop);
+        console.log(multDiv);
         input.splice(i+1, 1, wop);
+        console.log(input);
       }}
     else {
-      multDiv.push(input[i]);
+      if (i != input.length-1 || input[i-1] === '+' || input[i-1] === '-') multDiv.push(input[i]);
       }
     }
 
   for (let j=0; j<multDiv.length; j++) {
     if (multDiv[j] === '+') {
+      console.log(multDiv);
       wop = parseFloat(multDiv[j-1]) + parseFloat(multDiv[j+1]);
       multDiv.splice(j+1, 1, wop);
+      console.log(multDiv);
       }
     else if (multDiv[j] === '-') {
       wop = parseFloat(multDiv[j-1]) - parseFloat(multDiv[j+1]);
@@ -83,9 +109,13 @@ equals.addEventListener('click', () => {
 
     solution = multDiv[multDiv.length - 1];
     multDiv = [];
-    display.textContent = solution;
+    if (solution === 0) {
+      solution = 1
+      display.textContent = 0;
+    }
+    else display.textContent = solution;
 
-})
+}})
 
 
 //function to reduce array to string
@@ -141,7 +171,7 @@ function createCalc() {
     zeroRow.appendChild(zero);
     
     const decimal = document.createElement('button');
-    decimal.classList.add('numberButton');
+    decimal.classList.add('deci');
     decimal.textContent = ".";
     zeroRow.appendChild(decimal);
 
@@ -155,3 +185,50 @@ function createCalc() {
     zeroContainer.appendChild(zeroRow);
 }
 
+
+
+//let currentNumb = new Array();
+//let running = new Array();
+//const display = document.querySelector('.display');
+//let disp = '';
+//let disp1;
+//let tempSolution;
+
+//let numberButtons = document.querySelectorAll('.numberButton');
+//Array.from(numberButtons).forEach(function(button) {
+  //button.addEventListener('click', () => {
+    //if button is deci, make sure is only one in currentNumb
+    //button display behavior
+    //disp1 = disp + button.textContent;
+    //disp = disp1;
+    //display.textContent = disp;
+
+    //button storage and calcs
+    //currentNumb.push(button.textContent);
+    //})})
+
+  //let operatorButtons = document.querySelectorAll('.operatorButton');
+  //Array.from(operatorButtons).forEach(function(button) {
+    //button.addEventListener('click', () => {
+      //if (currentNumb.length>0) {
+        //button display behavior
+        //console.log('hi')
+        //disp1 = disp + button.textContent;
+        //disp = disp1;
+        //display.textContent = disp;
+
+        //button storage and calcs
+        //running.push(strand(currentNumb));
+        //currentNumb = [];
+        //if (running.length>=3 && (button.textContent === "+" || button.textContent === "-")) {
+
+        //}
+      //  running.push(button.textContent);
+    //    }
+  //    })})
+
+//function evaluate(arr) {
+  //arr.forEach(function(entry) {
+
+  //}
+//)}

@@ -96,6 +96,14 @@ button {
     flex: 1
 }
 
+.deci {
+    border: solid 0.1px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background-color: rgb(214, 211, 219);
+    flex: 1
+}
+
 .numberButton:hover {
     background-color: rgb(248, 236, 224);
 }
